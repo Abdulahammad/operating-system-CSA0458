@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+struct Process {
+    int pid;
+    int burst;
+};
+
+int main() {
+    int n, quantum;
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+    printf("Enter time quantum: ");
+    scanf("%d", &quantum);
+
+    struct Process processes[n];
+
+    for (int i = 0; i < n; i++) {
+        processes[i].pid = i + 1;
+        printf("Enter burst time for process %d: ", i + 1);
+        scanf("%d", &processes[i].burst);
+    }
+
+    printf("Process execution order: ");
+
+    while (1) {
+        int allCompleted = 1;
+        for (int i = 0; i < n; i++) {
+            if (processes[i].burst > 0) {
+                allCompleted = 0;
+                if (processes[i].burst <= quantum) {
+                    printf("P%d ", processes[i].pid);
+                    processes[i].burst = 0;
+                } else {
+                    printf("P%d ", processes[i].pid);
+                    processes[i].burst -= quantum;
+                }
+            }
+        }
+        if (allCompleted) {
+            break;
+        }
+    }
+
+    printf("\n");
+
+    return 0;
+}
